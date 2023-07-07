@@ -114,7 +114,9 @@ echo -e "\033[1;34mInstall conda...\033[0m"
 bash "$OPT_DIR/$CONDA_INSTALLER" -b -p "$CONDA_DIR"
 
 # note! mamba: default timeout seems too short
-export MAMBA_NO_LOW_SPEED_LIMIT=1
+# reference:
+#   https://github.com/mamba-org/mamba/issues/2145
+export MAMBA_NO_LOW_SPEED_LIMIT=0
 
 echo -e "\033[1;34mInstall compiler...\033[0m"
 
