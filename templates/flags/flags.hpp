@@ -16,9 +16,6 @@
 // only needed if any flags have been declared public
 #include "roq/compat.hpp"
 
-#include "roq/core/flags/non_empty.hpp"
-#include "roq/core/flags/non_zero.hpp"
-
 {% for value in values %}
 {%- if value.is_public %}
 ABSL_DECLARE_FLAG({{ value.validator }}, {{ value.name }}) ROQ_PUBLIC;

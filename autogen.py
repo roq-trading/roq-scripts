@@ -20,6 +20,7 @@ def snake_case(name):
     name = re.sub("(.)([A-Z][a-z]+)", r"\1_\2", name)
     return re.sub("([a-z0-9])([A-Z])", r"\1_\2", name).lower()
 
+
 defaults = {
     "std::string": "",
     "std::string_view": "{}",
@@ -214,16 +215,8 @@ def _new_spec_helper(item):
         is_enum=enum,
         is_float=is_float,
         is_chrono=is_chrono,
-        format_string="'{}'"
-        if char
-        else '"{}"'
-        if string
-        else "[{}]"
-        if array
-        else "{}",
-        format_value=('fmt::join(value.{}, ", "sv)' if array else "value.{}").format(
-            safe_name
-        ),
+        format_string="'{}'" if char else '"{}"' if string else "[{}]" if array else "{}",
+        format_value=('fmt::join(value.{}, ", "sv)' if array else "value.{}").format(safe_name),
         is_external=external,
         description=description,
         validator=validator,
@@ -245,7 +238,7 @@ def _include_helper(namespaces, variable):
     return tmp[:-1] + ("common",)
 
 
-def new_spec(path, namespaces, name, spec, type_, output_type, prefix):
+def new_spec(path, raw_namespace, namespaces, name, spec, type_, output_type, prefix):
     """aggregate the spec as dict"""
     filename = os.path.splitext(os.path.basename(path))[0]
 
@@ -266,6 +259,7 @@ def new_spec(path, namespaces, name, spec, type_, output_type, prefix):
     )
 
     return dict(
+        raw_namespace=raw_namespace,
         namespaces=namespaces,
         name=name,
         filename=filename,
@@ -276,7 +270,7 @@ def new_spec(path, namespaces, name, spec, type_, output_type, prefix):
     )
 
 
-def process(output_type, file_type, path, namespaces, templates):
+def process(output_type, file_type, path, raw_namespace, namespaces, templates):
     """generate the output file based on a template"""
     with open(path) as file:
         doc = json.load(file)
@@ -287,7 +281,7 @@ def process(output_type, file_type, path, namespaces, templates):
 
         env = Environment(loader=FileSystemLoader(templates))
         template = env.get_template(".".join((type_, file_type)))
-        spec = new_spec(path, namespaces, name, values, type_, output_type, prefix)
+        spec = new_spec(path, raw_namespace, namespaces, name, values, type_, output_type, prefix)
         result = template.render(**spec)
         print(result)
 
@@ -301,7 +295,9 @@ def main():
     parser.add_argument("spec", type=str, help="spec file (.json)")
     args = parser.parse_args()
 
-    namespaces = tuple(args.namespace.split("/"))
+    raw_namespace = args.namespace
+
+    namespaces = [item.replace("-", "_") for item in tuple(raw_namespace.split("/"))]
 
     dirname = os.path.dirname(os.path.realpath(__file__))
     templates = [
@@ -309,7 +305,7 @@ def main():
         os.path.join(dirname, "templates", "common"),
     ]
 
-    process(args.output_type, args.file_type, args.spec, namespaces, templates)
+    process(args.output_type, args.file_type, args.spec, raw_namespace, namespaces, templates)
 
 
 if __name__ == "__main__":
