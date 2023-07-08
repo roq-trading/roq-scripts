@@ -9,7 +9,6 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
       const {{ namespaces | join('::') }}::{{ name }}& value,
       Context& context) const {
     using namespace std::literals;
-    using namespace fmt::literals;
     return fmt::format_to(
         context.out(),
 {%- raw %}
@@ -19,7 +18,7 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
 {%- endfor %}
 {%- raw %}
-        R"(}})"_cf,
+        R"(}})"sv,
 {%- endraw %}
 {%- for variable in variables %}
         {{ variable.format_value }}{{ ',' if not loop.last else ');' }}
