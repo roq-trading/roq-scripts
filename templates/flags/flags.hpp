@@ -54,7 +54,7 @@ struct {{ name }} final {
 {%- endfor %}
 };
 
-struct {{ name }}__flags final {
+struct {{ name }}__flags {
   {{ name }}__flags();
 
 {% for value in values %}
