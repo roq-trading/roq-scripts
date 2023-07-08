@@ -53,12 +53,12 @@ namespace {
 struct Helper final {
 {% for value in values %}
 {%- if value.is_string %}
-  static std::string_view {{ prefix }}{{ value.name }}() {
+  static std::string_view {{ value.name }}() {
 {%- else %}
 {%- if value.is_pod_or_std %}
-  static {{ value.type }} {{ prefix }}{{ value.name }}() {
+  static {{ value.type }} {{ value.name }}() {
 {%- else %}
-  static {{ value.type }} const &{{ prefix }}{{ value.name }}() {
+  static {{ value.type }} const &{{ value.name }}() {
 {%- endif %}
 {%- endif %}
 {%- if value.type == 'std::chrono::nanoseconds' %}
@@ -85,13 +85,12 @@ struct Helper final {
 };
 }  // namespace
 
-{{ name }}::{{ name }}() :
+{{ name }} {{ name }}::create() {
+  return {
 {%- for value in values %}
-    {{ value.name }}{ Helper::{{ prefix }}{{ value.name}}() }
-{%- if not loop.last %}
-    ,
-{%- endif %}
+    .{{ value.name }} = Helper::{{ value.name}}(),
 {%- endfor %}
-{}
+  };
+}
 
 {% include 'namespace_end' %}

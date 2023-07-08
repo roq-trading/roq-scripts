@@ -15,8 +15,6 @@
 {% include 'namespace_begin' %}
 
 struct {{ name }} {
-  {{ name }}();
-
 {% for value in values %}
 {%- if value.is_string %}
   std::string_view const {{ value.name }};
@@ -28,6 +26,8 @@ struct {{ name }} {
 {%- endif %}
 {%- endif %}
 {%- endfor %}
+
+  static {{ name }} create();
 };
 
 {% include 'namespace_end' %}
