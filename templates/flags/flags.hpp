@@ -5,16 +5,15 @@
 // only needed if any flags have been declared public
 #include <absl/flags/declare.h>
 
+#include <fmt/chrono.h>
+#include <fmt/compile.h>
+#include <fmt/format.h>
+
 #include <chrono>
 #include <cstdint>
 #include <string>
 #include <string_view>
 #include <vector>
-
-#include "roq/io/web/uri.hpp"
-
-// only needed if any flags have been declared public
-#include "roq/compat.hpp"
 
 {% for value in values %}
 {%- if value.is_public %}

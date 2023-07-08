@@ -43,7 +43,7 @@ defaults = {
     "std::uint32_t": "{}",
     "std::int64_t": "{}",
     "std::uint64_t": "{}",
-    "double": "NaN",
+    "double": "std::numeric_limits<double>::quiet_NaN()",
     "std::chrono::year_month_day": "{}",
     "std::chrono::hh_mm_ss<std::chrono::milliseconds>": "{}",
 }

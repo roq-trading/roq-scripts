@@ -7,6 +7,8 @@
 
 #include <string>
 
+#include "roq/api.hpp"
+
 using namespace std::literals;
 using namespace std::chrono_literals;  // NOLINT
 
@@ -19,14 +21,30 @@ ABSL_FLAG(  //
 {%- if value.type == 'std::vector<uint16_t>' %}
     std::vector<std::string>,
 {%- else %}
+{%- if value.type == 'std::chrono::nanoseconds' %}
+    absl::Duration,
+{%- else %}
     {{ value.type }},
 {%- endif %}
 {%- endif %}
+{%- endif %}
     {{ prefix }}{{ value.flag_name }},
+{%- if value.type == 'std::chrono::nanoseconds' %}
+{%- if value.default_raw[-3:-1] == 'ms' %}
+   absl::Milliseconds({{ value.default_raw[1:-3] }}),
+{%- else %}
+{%- if value.default_raw[-2] == 's' %}
+   absl::Seconds({{ value.default_raw[1:-2] }}),
+{%- else %}
+    {{ value.default_raw }},  // XXX maybe extend template to more duration types?
+{%- endif %}
+{%- endif %}
+{%- else %}
 {%- if value.is_string or value.is_enum %}
     { {{ value.default_raw }} },
 {%- else %}
     {{ value.default_raw }},
+{%- endif %}
 {%- endif %}
     "{{ value.description }}"s);
 {%- endif %}
@@ -56,7 +74,7 @@ ABSL_DECLARE_FLAG({{ value.type }}, {{ value.flag_name }});
   const {{ value.type }} &{{ name }}::{{ prefix }}{{ value.name }}() {
 {%- endif %}
 {%- endif %}
-{%- if value.type == 'std::chrono::nanoseconds' and value.validator == 'roq::core::flags::TimePeriod' %}
+{%- if value.type == 'std::chrono::nanoseconds' %}
   static const {{ value.type }} result{absl::ToChronoNanoseconds(absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }}))};
 {%- else %}
 {%- if value.type == 'std::vector<uint16_t>' %}
