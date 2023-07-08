@@ -13,7 +13,6 @@ using namespace std::literals;
 using namespace std::chrono_literals;  // NOLINT
 
 {% for value in values %}
-{%- if not value.is_external %}
 ABSL_FLAG(  //
 {%- if value.has_validator %}
     {{ value.validator }},
@@ -47,35 +46,24 @@ ABSL_FLAG(  //
 {%- endif %}
 {%- endif %}
     "{{ value.description }}"s);
-{%- endif %}
 {% endfor %}
-
-// external
-
-{% for value in values %}
-{%- if value.is_external %}
-{%- if value.has_validator %}
-ABSL_DECLARE_FLAG({{ value.validator }}, {{ value.flag_name }});
-{%- else %}
-ABSL_DECLARE_FLAG({{ value.type }}, {{ value.flag_name }});
-{%- endif %}
-{%- endif %}
-{%- endfor %}
 
 {% include 'namespace_begin' %}
 
+namespace {
+struct Helper final {
 {% for value in values %}
 {%- if value.is_string %}
-  std::string_view {{ name }}::{{ prefix }}{{ value.name }}() {
+  static std::string_view {{ prefix }}{{ value.name }}() {
 {%- else %}
 {%- if value.is_pod_or_std %}
-  {{ value.type }} {{ name }}::{{ prefix }}{{ value.name }}() {
+  static {{ value.type }} {{ prefix }}{{ value.name }}() {
 {%- else %}
-  const {{ value.type }} &{{ name }}::{{ prefix }}{{ value.name }}() {
+  static {{ value.type }} const &{{ prefix }}{{ value.name }}() {
 {%- endif %}
 {%- endif %}
 {%- if value.type == 'std::chrono::nanoseconds' %}
-  static const {{ value.type }} result{absl::ToChronoNanoseconds(absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }}))};
+  static {{ value.type }} const result{absl::ToChronoNanoseconds(absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }}))};
 {%- else %}
 {%- if value.type == 'std::vector<uint16_t>' %}
   auto parse = []() {
@@ -87,24 +75,20 @@ ABSL_DECLARE_FLAG({{ value.type }}, {{ value.flag_name }});
     }
     return result;
   };
-  static const {{ value.type }} result{parse()};
+  static {{ value.type }} const result{parse()};
 {%- else %}
-  static const {{ value.type }} result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
+  static {{ value.type }} const result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
 {%- endif %}
 {%- endif %}
   return result;
 }
 {% endfor %}
+};
+}  // namespace
 
-{{ name }}__flags::{{ name }}__flags() :
+{{ name }}::{{ name }}() :
 {%- for value in values %}
-{%- if not value.is_external %}
-{%- if value.is_string %}
-    {{ value.name }}{ {{ name }}::{{ prefix }}{{ value.name}}() }
-{%- else %}
-    {{ value.name }}{ {{ name }}::{{ prefix }}{{ value.name}}() }
-{%- endif %}
-{%- endif %}
+    {{ value.name }}{ Helper::{{ prefix }}{{ value.name}}() }
 {%- if not loop.last %}
     ,
 {%- endif %}
