@@ -144,7 +144,6 @@ echo -e "\033[1;34mInstall dependencies...\033[0m"
   abseil-cpp \
   benchmark \
   jinja2 \
-  libevent \
   nlohmann_json \
   pybind11 \
   re2 \
