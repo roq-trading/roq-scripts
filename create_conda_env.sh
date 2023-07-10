@@ -144,7 +144,10 @@ echo -e "\033[1;34mInstall dependencies...\033[0m"
   abseil-cpp \
   benchmark \
   jinja2 \
+  libevent \
   nlohmann_json \
+  pybind11 \
+  re2 \
   tomlplusplus
 
 echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
@@ -163,7 +166,6 @@ esac
   roq-client \
   roq-fix-bridge \
   roq-io \
-  roq-oss-re2 \
   roq-tools \
   roq-web
 
