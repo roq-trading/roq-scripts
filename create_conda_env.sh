@@ -164,6 +164,7 @@ esac
 "$CONDA_DIR/bin/mamba" install -y --channel "https://roq-trading.com/conda/$BUILD" \
   roq-client \
   roq-fix-bridge \
+  roq-flags \
   roq-io \
   roq-tools \
   roq-web
