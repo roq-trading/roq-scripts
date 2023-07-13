@@ -103,10 +103,6 @@ def sub_type(type_):
             return remove_const(type_[10:-1])
         if "roq::fix::" in type_:
             return remove_const(type_[10:-1])
-        if "roq::core::fix::" in type_:
-            return remove_const(type_[16:-1])
-        if "core::fix::" in type_:
-            return remove_const(type_[11:-1])
     return type_
 
 
@@ -117,7 +113,7 @@ def get_default_from_type(type_):
     if is_fix(type_):
         # return "{}::UNDEFINED".format(type_)
         return "{}"
-    if not is_pod_or_std(type_) and not "core::fix::" in type_ and not "fix::" in type_:
+    if not is_pod_or_std(type_) and not "fix::" in type_:
         return ""
     ret = defaults.get(type_)
     return ret if isinstance(ret, str) else "{}"
@@ -239,7 +235,7 @@ def _include_helper(namespaces, variable):
     # XXX HACK
     tmp = tuple(variable["type"].split("::"))
     # return tmp[:-1] + (snake_case(tmp[-1]),)
-    return tmp[:-1] + ("common",)
+    return tmp[:-1]
 
 
 def new_spec(path, raw_namespace, namespaces, name, spec, type_, output_type, prefix):

@@ -8,6 +8,10 @@
 #include <limits>
 #include <string>
 
+#include "roq/exceptions.hpp"
+
+#include "roq/flags/validators.hpp"
+
 using namespace std::literals;
 using namespace std::chrono_literals;  // NOLINT
 
@@ -76,7 +80,48 @@ struct Helper final {
   };
   static {{ value.type }} const result{parse()};
 {%- else %}
+{%- if value.is_string %}
+{%- if value.is_required %}
+  auto helper = [](){
+    auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
+    if (std::empty(flag))
+      throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+    return flag;
+  };
+  static {{ value.type }} const result{helper()};
+{%- else %}
   static {{ value.type }} const result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
+{%- endif %}
+{%- else %}
+{%- if value.is_pod_or_std %}
+{%- if value.is_required %}
+  auto helper = [](){
+    auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
+    if (flag == {{ value.type }}{})
+      throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+    return flag;
+  };
+  static const {{ value.type }} result{helper()};
+{%- else %}
+  static {{ value.type }} const result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
+{%- endif %}
+{%- else %}
+  auto helper = [](){
+    auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
+{%- if value.is_required %}
+    if (std::empty(flag))
+      throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+{%- else %}
+{%- if not 'std::vector<' in value.type %}
+    if (flag.required() && std::empty(flag))
+      throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+{%- endif %}
+{%- endif %}
+    return flag;
+  };
+  static const {{ value.type }} result{helper()};
+{%- endif %}
+{%- endif %}
 {%- endif %}
 {%- endif %}
   return result;
