@@ -24,6 +24,8 @@ case "$BUILD" in
     ;;
   unstable)
     ;;
+  test)  # temporary (maybe)
+    ;;
   *)
     (>&2 echo -e "\033[1;31mERROR: Unknown build. Should be 'stable' or 'unstable'.\033[0m") && exit 1
     ;;
