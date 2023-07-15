@@ -95,13 +95,9 @@ struct Helper final {
 {%- else %}
 {%- if value.is_pod_or_std %}
 {%- if value.is_required %}
-  auto helper = [](){
-    auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
-    if (flag == {{ value.type }}{})
-      throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
-    return flag;
-  };
-  static const {{ value.type }} result{helper()};
+  static const {{ value.type }} result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
+  if (result == {{ value.type }}{})
+    throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
 {%- else %}
   static {{ value.type }} const result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
 {%- endif %}
