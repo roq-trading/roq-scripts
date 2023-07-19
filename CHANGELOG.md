@@ -6,4 +6,5 @@ All notable changes will be documented in this file.
 
 ### Fixed
 
+* Formatting of empty struct failed
 * Include issue with std::vector
