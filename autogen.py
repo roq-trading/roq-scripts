@@ -101,6 +101,8 @@ def sub_type(type_):
     if not type_ is None:
         if "std::span<" in type_:
             return remove_const(type_[10:-1])
+        if "std::vector<" in type_:
+            return remove_const(type_[12:-1])
         if "roq::fix::" in type_:
             return remove_const(type_[10:-1])
     return type_
