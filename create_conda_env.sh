@@ -156,6 +156,8 @@ echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
 case "$KERNEL" in
   Linux*)
     "$CONDA_DIR/bin/mamba" install -y 'catch2>=3.3'
+    "$CONDA_DIR/bin/mamba" install -y --channel "https://roq-trading.com/conda/$BUILD" \
+      roq-adapter
     ;;
   Darwin*)
     "$CONDA_DIR/bin/mamba" install -y --channel "https://roq-trading.com/conda/$BUILD" \
