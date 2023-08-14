@@ -32,7 +32,7 @@ case "$BUILD" in
 esac
 
 if [[ -z $2 ]]; then
-  (>&2 echo -e "\033[1;31mERROR: Expected second argument to be a target. Use 'debug' or 'release'..\033[0m") && exit 1
+  (>&2 echo -e "\033[1;31mERROR: Expected second argument to be a target. Use 'debug' or 'release'.\033[0m") && exit 1
 fi
 
 TARGET="$2"
@@ -87,7 +87,8 @@ esac
 
 echo "CONDA_OS=$CONDA_OS"
 
-CONDA="${CONDA_BIN:-mamba}"
+# note! we currently can't use libmamba which depends on fmt 9.x (we require 10.x)
+CONDA="${CONDA_BIN:-conda}"
 
 case "$CONDA" in
   mamba)
@@ -157,7 +158,6 @@ echo -e "\033[1;34mInstall dependencies...\033[0m"
 "$CONDA_DIR/bin/$CONDA" install -y \
   abseil-cpp \
   benchmark \
-  'fmt==10.0' \
   jinja2 \
   nlohmann_json \
   pybind11 \
