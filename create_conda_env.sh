@@ -90,6 +90,8 @@ echo "CONDA_OS=$CONDA_OS"
 # note! we currently can't use libmamba which depends on fmt 9.x (we require 10.x)
 CONDA="${CONDA_BIN:-conda}"
 
+echo "CONDA=$CONDA"
+
 case "$CONDA" in
   mamba)
     CONDA_INSTALLER="Mambaforge-$CONDA_OS-$CONDA_ARCH.sh"
@@ -137,16 +139,16 @@ echo -e "\033[1;34mInstall compiler...\033[0m"
 
 case "$KERNEL" in
   Linux*)
-    "$CONDA_DIR/bin/$CONDA" install -y "gxx_linux-$CONDA_PKG_EXT>=13"
+    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y "gxx_linux-$CONDA_PKG_EXT>=13"
     ;;
   Darwin*)
-    "$CONDA_DIR/bin/$CONDA" install -y "clang_osx-$CONDA_PKG_EXT>=16"
+    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y "clang_osx-$CONDA_PKG_EXT>=16"
     ;;
 esac
 
 echo -e "\033[1;34mInstall toolchain...\033[0m"
 
-"$CONDA_DIR/bin/$CONDA" install -y \
+"$CONDA_DIR/bin/$CONDA" install --freeze-installed -y \
   'clangdev>=16' \
   'cmake>=3.25' \
   conda-build \
@@ -155,7 +157,7 @@ echo -e "\033[1;34mInstall toolchain...\033[0m"
 
 echo -e "\033[1;34mInstall dependencies...\033[0m"
 
-"$CONDA_DIR/bin/$CONDA" install -y \
+"$CONDA_DIR/bin/$CONDA" install --freeze-installed -y \
   abseil-cpp \
   benchmark \
   jinja2 \
@@ -168,15 +170,15 @@ echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
 
 case "$KERNEL" in
   Linux*)
-    "$CONDA_DIR/bin/$CONDA" install -y 'catch2>=3.3'
+    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y 'catch2>=3.3'
     ;;
   Darwin*)
-    "$CONDA_DIR/bin/$CONDA" install -y --channel "https://roq-trading.com/conda/$BUILD" \
+    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y --channel "https://roq-trading.com/conda/$BUILD" \
       roq-oss-catch2
     ;;
 esac
 
-"$CONDA_DIR/bin/$CONDA" install -y --channel "https://roq-trading.com/conda/$BUILD" \
+"$CONDA_DIR/bin/$CONDA" install --freeze-installed -y --channel "https://roq-trading.com/conda/$BUILD" \
   roq-client \
   roq-fix-bridge \
   roq-flags \
