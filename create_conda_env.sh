@@ -7,9 +7,9 @@ fi
 OPT_DIR="./opt"
 CONDA_DIR="$OPT_DIR/conda"
 
-if [[ -d "$CONDA_DIR" ]]; then
-  (>&2 echo -e "\033[1;31mERROR: Refusing to overwrite an existing conda installation. Directory is '$CONDA_DIR'.\033[0m") && exit 1
-fi
+#if [[ -d "$CONDA_DIR" ]]; then
+#  (>&2 echo -e "\033[1;31mERROR: Refusing to overwrite an existing conda installation. Directory is '$CONDA_DIR'.\033[0m") && exit 1
+#fi
 
 if [[ -z $1 ]]; then
   (>&2 echo -e "\033[1;31mERROR: Expected first argument to be a build. Use 'stable' or 'unstable'..\033[0m") && exit 1
@@ -87,22 +87,7 @@ esac
 
 echo "CONDA_OS=$CONDA_OS"
 
-# note! we currently can't use libmamba which depends on fmt 9.x (we require 10.x)
-CONDA="${CONDA_BIN:-conda}"
-
-echo "CONDA=$CONDA"
-
-case "$CONDA" in
-  mamba)
-    CONDA_INSTALLER="Mambaforge-$CONDA_OS-$CONDA_ARCH.sh"
-    ;;
-  conda)
-    CONDA_INSTALLER="Miniforge3-$CONDA_OS-$CONDA_ARCH.sh"
-    ;;
-  *)
-    (>&2 echo -e "\033[1;31mERROR: Unknown CONDA_BIN.\033[0m") && exit 1
-    ;;
-esac
+CONDA_INSTALLER="Miniforge3-$CONDA_OS-$CONDA_ARCH.sh"
 
 echo "CONDA_INSTALLER=$CONDA_INSTALLER"
 
@@ -133,26 +118,37 @@ bash "$OPT_DIR/$CONDA_INSTALLER" -b -p "$CONDA_DIR"
 # note! mamba: default timeout seems too short
 # reference:
 #   https://github.com/mamba-org/mamba/issues/2145
-export MAMBA_NO_LOW_SPEED_LIMIT=0
+export MAMBA_NO_LOW_SPEED_LIMIT=1
 
-echo -e "\033[1;34mWORKAROUND: remove mamba (due to fmt conflict)...\033[0m"
+CONDA_ENV="dev"
 
-"$CONDA_DIR/bin/$CONDA" remove -y mamba libmambapy libmamba conda-libmamba-solver
+echo "CONDA_ENV=$CONDA_ENV"
+
+if ! "$CONDA_DIR/bin/conda" env list | grep "^$CONDA_ENV" 2>&1 >/dev/null; then
+
+echo -e "\033[1;34mCreate '$CONDA_ENV' environment...\033[0m"
+
+"$CONDA_DIR/bin/conda" create --name "$CONDA_ENV" --yes
+
+fi
 
 echo -e "\033[1;34mInstall compiler...\033[0m"
 
 case "$KERNEL" in
   Linux*)
-    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y "gxx_linux-$CONDA_PKG_EXT>=13"
+    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "gxx_linux-$CONDA_PKG_EXT>=13"
     ;;
   Darwin*)
-    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y "clang_osx-$CONDA_PKG_EXT>=16"
+    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "clang_osx-$CONDA_PKG_EXT>=16"
     ;;
 esac
 
 echo -e "\033[1;34mInstall toolchain...\033[0m"
 
-"$CONDA_DIR/bin/$CONDA" install --freeze-installed -y \
+"$CONDA_DIR/bin/mamba" install \
+  --name "$CONDA_ENV" \
+  --freeze-installed \
+  --yes \
   'clangdev>=16' \
   'cmake>=3.25' \
   conda-build \
@@ -161,7 +157,10 @@ echo -e "\033[1;34mInstall toolchain...\033[0m"
 
 echo -e "\033[1;34mInstall dependencies...\033[0m"
 
-"$CONDA_DIR/bin/$CONDA" install --freeze-installed -y \
+"$CONDA_DIR/bin/mamba" install \
+  --name "$CONDA_ENV" \
+  --freeze-installed \
+  --yes \
   abseil-cpp \
   benchmark \
   jinja2 \
@@ -174,15 +173,15 @@ echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
 
 case "$KERNEL" in
   Linux*)
-    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y 'catch2>=3.3'
+    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes 'catch2>=3.3'
     ;;
   Darwin*)
-    "$CONDA_DIR/bin/$CONDA" install --freeze-installed -y --channel "https://roq-trading.com/conda/$BUILD" \
+    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes --channel "https://roq-trading.com/conda/$BUILD" \
       roq-oss-catch2
     ;;
 esac
 
-"$CONDA_DIR/bin/$CONDA" install --freeze-installed -y --channel "https://roq-trading.com/conda/$BUILD" \
+"$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes --channel "https://roq-trading.com/conda/$BUILD" \
   roq-client \
   roq-fix-bridge \
   roq-flags \
@@ -210,7 +209,7 @@ CXXFLAGS="${CXXFLAGS/-march=nocona/-march=broadwell}"
 CXXFLAGS="${CXXFLAGS/-mtune=haswell/-mtune=broadwell}"
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$CFLAGS -O3"
-export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-overloaded-virtual -I$PREFIX/include -O3"
+export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-overloaded-virtual -O3"
 export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
@@ -221,7 +220,7 @@ EOF
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$DEBUG_CFLAGS -fsanitize=address"
-export CPPFLAGS="$DEBUG_CPPFLAGS -fsanitize=address -Wall -Wextra -Wno-overloaded-virtual -I$PREFIX/include"
+export CPPFLAGS="$DEBUG_CPPFLAGS -fsanitize=address -Wall -Wextra -Wno-overloaded-virtual"
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
@@ -239,7 +238,7 @@ if [[ "$KERNEL" =~ .*Darwin.* ]]; then
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$CFLAGS"
-export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -I$PREFIX/include"
+export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -DFMT_USE_NONTYPE_TEMPLATE_ARGS=1"
 export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
@@ -250,7 +249,7 @@ EOF
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$DEBUG_CFLAGS"
-export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -I$PREFIX/include"
+export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -DFMT_USE_NONTYPE_TEMPLATE_ARGS=1"
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
@@ -262,4 +261,4 @@ EOF
 fi
 
 echo -e "\033[1;34mReady!\033[0m"
-echo -e "\033[1;34mYou can now activate your conda environment using 'source $CONDA_DIR/bin/activate'.\033[0m"
+echo -e "\033[1;34mYou can now activate your conda environment using 'source $CONDA_DIR/bin/activate && conda activate $CONDA_ENV'.\033[0m"
