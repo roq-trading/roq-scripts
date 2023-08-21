@@ -117,7 +117,7 @@ bash "$OPT_DIR/$CONDA_INSTALLER" -b -p "$CONDA_DIR"
 
 echo -e "\033[1;34mUpdate conda...\033[0m"
 
-conda update --name base --channel conda-forge --yes conda
+"$CONDA_DIR/bin/conda" update --name base --channel conda-forge --yes conda
 
 # note! mamba: default timeout seems too short
 # reference:
