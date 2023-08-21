@@ -135,6 +135,10 @@ bash "$OPT_DIR/$CONDA_INSTALLER" -b -p "$CONDA_DIR"
 #   https://github.com/mamba-org/mamba/issues/2145
 export MAMBA_NO_LOW_SPEED_LIMIT=0
 
+echo -e "\033[1;34mWORKAROUND: remove mamba (due to fmt conflict)...\033[0m"
+
+"$CONDA_DIR/bin/$CONDA" remove -y mamba libmambapy libmamba conda-libmamba-solver
+
 echo -e "\033[1;34mInstall compiler...\033[0m"
 
 case "$KERNEL" in
