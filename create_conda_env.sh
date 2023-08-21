@@ -261,4 +261,4 @@ EOF
 fi
 
 echo -e "\033[1;34mReady!\033[0m"
-echo -e "\033[1;34mYou can now activate your conda environment using 'source $CONDA_DIR/bin/activate && conda activate $CONDA_ENV'.\033[0m"
+echo -e "\033[1;34mYou can now activate your conda environment using 'source $CONDA_DIR/bin/activate $CONDA_ENV'.\033[0m"
