@@ -195,7 +195,7 @@ esac
 
 echo -e "\033[1;34mInstall conda activation script...\033[0m"
 
-CONDA_ACTIVATION_DIR="$CONDA_DIR/etc/conda/activate.d"
+CONDA_ACTIVATION_DIR="$CONDA_DIR/envs/$CONDA_ENV/etc/conda/activate.d"
 
 mkdir -p "$CONDA_ACTIVATION_DIR"
 
