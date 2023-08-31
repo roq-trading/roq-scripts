@@ -119,8 +119,8 @@ echo -e "\033[1;34mInstall dev activation script...\033[0m"
 
 # note! because clion doesn't accept arguments for the activation script
 cat > "$CONDA_DIR/bin/activate_dev" << 'EOF'
-#!/bin/bash                                                                                                                                                                  
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )                                            
+#!/usr/bin/env bash
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source "$SCRIPT_DIR/activate" "dev" || return $?
 EOF
 
