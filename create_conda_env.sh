@@ -226,7 +226,7 @@ export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-overloaded-virtual -O3"
 export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
-export ROQ_BUILD_TYPE="release"
+export ROQ_BUILD_TYPE="Release"
 EOF
       ;;
     debug)
@@ -237,7 +237,7 @@ export CPPFLAGS="$DEBUG_CPPFLAGS -fsanitize=address -Wall -Wextra -Wno-overloade
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
-export ROQ_BUILD_TYPE="debug"
+export ROQ_BUILD_TYPE="Debug"
 export ASAN_OPTIONS="strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_leaks=1"
 EOF
       ;;
@@ -255,7 +255,7 @@ export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -DFMT_USE_NONT
 export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
-export ROQ_BUILD_TYPE="release"
+export ROQ_BUILD_TYPE="Release"
 EOF
       ;;
     debug)
@@ -266,7 +266,7 @@ export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -DFMT_US
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
-export ROQ_BUILD_TYPE="debug"
+export ROQ_BUILD_TYPE="Debug"
 export ASAN_OPTIONS="strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_leaks=1"
 EOF
       ;;
