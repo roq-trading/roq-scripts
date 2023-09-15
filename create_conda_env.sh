@@ -196,10 +196,11 @@ esac
 
 "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes --channel "https://roq-trading.com/conda/$BUILD" \
   roq-client \
+  roq-fbs-codec \
   roq-fix-codec \
-  roq-sbe-codec \
   roq-flags \
   roq-io \
+  roq-sbe-codec \
   roq-tools \
   roq-web
 
