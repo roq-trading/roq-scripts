@@ -32,6 +32,9 @@ ABSL_FLAG(  //
 {%- endif %}
     {{ prefix }}{{ value.flag_name }},
 {%- if value.type == 'std::chrono::nanoseconds' %}
+{%- if value.default_raw[-3:-1] == 'ns' %}
+   absl::Nanoseconds({{ value.default_raw[1:-3] }}),
+{%- else %}
 {%- if value.default_raw[-3:-1] == 'ms' %}
    absl::Milliseconds({{ value.default_raw[1:-3] }}),
 {%- else %}
@@ -39,6 +42,7 @@ ABSL_FLAG(  //
    absl::Seconds({{ value.default_raw[1:-2] }}),
 {%- else %}
     {{ value.default_raw }},  // XXX maybe extend template to more duration types?
+{%- endif %}
 {%- endif %}
 {%- endif %}
 {%- else %}
