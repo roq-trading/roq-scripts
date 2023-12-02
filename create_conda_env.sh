@@ -164,7 +164,6 @@ echo -e "\033[1;34mInstall toolchain...\033[0m"
   --yes \
   'clangdev>=16' \
   'cmake>=3.25' \
-  conda-build \
   make \
   pkg-config
 
