@@ -124,10 +124,6 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source "$SCRIPT_DIR/activate" "dev" || return $?
 EOF
 
-echo -e "\033[1;34mUpdate conda...\033[0m"
-
-"$CONDA_DIR/bin/mamba" update --name base --channel conda-forge --yes conda
-
 # note! mamba: default timeout seems too short
 # reference:
 #   https://github.com/mamba-org/mamba/issues/2145
