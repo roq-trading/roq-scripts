@@ -148,7 +148,7 @@ case "$KERNEL" in
     "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "gxx_linux-$CONDA_PKG_EXT>=13"
     ;;
   Darwin*)
-    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "clang_osx-$CONDA_PKG_EXT>=16"
+    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "clang_osx-$CONDA_PKG_EXT>=16,<17"
     ;;
 esac
 
@@ -158,7 +158,7 @@ echo -e "\033[1;34mInstall toolchain...\033[0m"
   --name "$CONDA_ENV" \
   --freeze-installed \
   --yes \
-  'clangdev>=16' \
+  'clangdev>=16,<17' \
   'cmake>=3.25' \
   make \
   pkg-config
