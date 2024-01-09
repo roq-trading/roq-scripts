@@ -1,13 +1,11 @@
 template <>
 struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  template <typename Context>
-  constexpr auto parse(Context &context) {
+  constexpr auto parse(format_parse_context &context) {
     return std::begin(context);
   }
-  template <typename Context>
   auto format(
       const {{ namespaces | join('::') }}::{{ name }}& value,
-      Context& context) const {
+      format_context& context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
