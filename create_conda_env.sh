@@ -246,7 +246,7 @@ if [[ "$KERNEL" =~ .*Darwin.* ]]; then
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$CFLAGS"
-export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -DFMT_USE_NONTYPE_TEMPLATE_ARGS=1"
+export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins"
 export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
@@ -257,7 +257,7 @@ EOF
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$DEBUG_CFLAGS"
-export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins -DFMT_USE_NONTYPE_TEMPLATE_ARGS=1"
+export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins"
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
