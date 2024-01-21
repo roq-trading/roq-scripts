@@ -194,6 +194,7 @@ esac
   roq-codec \
   roq-flags \
   roq-io \
+  roq-oss-nameof \
   roq-tools \
   roq-web
 
