@@ -4,6 +4,10 @@ if [[ ! -z $CONDA_PREFIX ]]; then
   (>&2 echo -e "\033[1;31mERROR: Please deactivate your conda environment before using this script. Use 'conda deactivate'.\033[0m") && exit 1
 fi
 
+if [[ -d "$HOME/.anaconda" ]]; then
+  (>&2 echo -e "\033[1;31mERROR: Refusing to install with Anaconda in the environment.\033[0m") && exit 1
+fi
+
 OPT_DIR="./opt"
 CONDA_DIR="$OPT_DIR/conda"
 
