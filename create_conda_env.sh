@@ -152,7 +152,7 @@ case "$KERNEL" in
     "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "gxx_linux-$CONDA_PKG_EXT>=13"
     ;;
   Darwin*)
-    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "clang_osx-$CONDA_PKG_EXT>=16,<17"
+    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes "clang_osx-$CONDA_PKG_EXT>=17"
     ;;
 esac
 
@@ -162,7 +162,7 @@ echo -e "\033[1;34mInstall toolchain...\033[0m"
   --name "$CONDA_ENV" \
   --freeze-installed \
   --yes \
-  'clangdev>=16,<17' \
+  'clangdev>=17' \
   'cmake>=3.25' \
   make \
   pkg-config
@@ -244,6 +244,7 @@ EOF
   esac
 fi
 
+# note! -D_LIBCPP_DISABLE_AVAILABILITY due to https://conda-forge.org/docs/maintainer/knowledge_base.html#newer-c-features-with-old-sdk
 # note! -Wno-deprecated-builtins due to abseil-cpp and clang 15
 if [[ "$KERNEL" =~ .*Darwin.* ]]; then
   case "$TARGET" in
@@ -251,7 +252,7 @@ if [[ "$KERNEL" =~ .*Darwin.* ]]; then
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$CFLAGS"
-export CPPFLAGS="$CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins"
+export CPPFLAGS="$CPPFLAGS -D_LIBCPP_DISABLE_AVAILABILITY -Wall -Wextra -Wno-deprecated-builtins"
 export CXXFLAGS="$CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
@@ -262,7 +263,7 @@ EOF
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
 export CFLAGS="$DEBUG_CFLAGS"
-export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-deprecated-builtins"
+export CPPFLAGS="$DEBUG_CPPFLAGS -D_LIBCPP_DISABLE_AVAILABILITY -Wall -Wextra -Wno-deprecated-builtins"
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
