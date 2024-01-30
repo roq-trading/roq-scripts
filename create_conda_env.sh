@@ -175,6 +175,7 @@ echo -e "\033[1;34mInstall dependencies...\033[0m"
   --yes \
   abseil-cpp \
   benchmark \
+  catch2 \
   jinja2 \
   nlohmann_json \
   pybind11 \
@@ -182,16 +183,6 @@ echo -e "\033[1;34mInstall dependencies...\033[0m"
   tomlplusplus
 
 echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
-
-case "$KERNEL" in
-  Linux*)
-    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes 'catch2>=3.3'
-    ;;
-  Darwin*)
-    "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes --channel "https://roq-trading.com/conda/$BUILD" \
-      roq-oss-catch2
-    ;;
-esac
 
 "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes --channel "https://roq-trading.com/conda/$BUILD" \
   roq-client \
