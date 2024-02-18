@@ -202,7 +202,6 @@ mkdir -p "$CONDA_ACTIVATION_DIR"
 CONDA_ACTIVATION_SCRIPT="$CONDA_ACTIVATION_DIR/roq.sh"
 
 # note! copying CPPFLAGS to CXXFLAGS because cmake doesn't use CPPFLAGS
-# note! not possible to use sanitizer with libabseil
 
 if [[ "$KERNEL" =~ .*Linux.* ]]; then
   case "$TARGET" in
@@ -224,12 +223,13 @@ EOF
     debug)
       cat > "$CONDA_ACTIVATION_SCRIPT" << 'EOF'
 export PREFIX="$CONDA_PREFIX"
-export CFLAGS="$DEBUG_CFLAGS"
-export CPPFLAGS="$DEBUG_CPPFLAGS -Wall -Wextra -Wno-overloaded-virtual"
+export CFLAGS="$DEBUG_CFLAGS -fsanitize=address"
+export CPPFLAGS="$DEBUG_CPPFLAGS -fsanitize=address -Wall -Wextra -Wno-overloaded-virtual"
 export CXXFLAGS="$DEBUG_CXXFLAGS $CPPFLAGS"
 export LDFLAGS="$LDFLAGS -L$PREFIX/lib"
 export PKG_CONFIG_PATH="$PREFIX/lib/pkgconfig"
 export ROQ_BUILD_TYPE="Debug"
+export ASAN_OPTIONS="strict_string_checks=1:detect_stack_use_after_return=1:check_initialization_order=1:strict_init_order=1:detect_leaks=1"
 EOF
       ;;
   esac
