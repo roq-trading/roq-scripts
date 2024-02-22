@@ -190,6 +190,7 @@ echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
   roq-flags \
   roq-io \
   roq-oss-nameof \
+  roq-oss-unordered_dense \
   roq-tools \
   roq-web
 
