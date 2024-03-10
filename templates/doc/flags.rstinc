@@ -2,8 +2,10 @@
   :header-rows: 1
 
   * - Name
+    - Defaults
     - Comments
 {% for value in values %}
   * - :code:`--{{ prefix }}{{ value.flag_name }}`
+    - {{ value.default | replace(" = ", "") | replace("\"s", "") | replace("\"", "") | replace("{", "") | replace("}", "") }}
     - {{ value.description }}
 {% endfor %}
