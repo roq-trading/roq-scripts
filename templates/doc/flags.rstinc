@@ -1,0 +1,9 @@
+.. list-table::
+  :header-rows: 1
+
+  * - Name
+    - Comments
+{% for value in values %}
+  * - :code:`--{{ prefix }}{{ value.flag_name }}`
+    - {{ value.description }}
+{% endfor %}
