@@ -198,6 +198,7 @@ def _new_spec_helper(item):
         elif string or (type_ is not None and "URI" in type_):
             default_raw = '"{}"s'.format(default_raw)
     description = item.get("description")
+    default_2 = default_raw.replace(" = ", "").replace("\"s", "").replace("\"", "").replace("{", "").replace("}", "")
     return dict(
         raw_name=raw_name,
         name=safe_name,
@@ -210,6 +211,7 @@ def _new_spec_helper(item):
         is_map=item.get("map", False),
         default_raw=default_raw,
         default="" if len(default_raw) == 0 else " = {}".format(default_raw),
+        default_2=default_2,
         include=not type_ is None,
         is_pod_or_std=pod_or_std,
         is_string=string,

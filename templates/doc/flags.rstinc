@@ -1,11 +1,4 @@
-.. list-table::
-  :header-rows: 1
-
-  * - Name
-    - Defaults
-    - Comments
 {% for value in values %}
-  * - :code:`--{{ prefix }}{{ value.flag_name }}`
-    - {{ value.default | replace(" = ", "") | replace("\"s", "") | replace("\"", "") | replace("{", "") | replace("}", "") }}
-    - {{ value.description }}
+:code:`--{{ prefix }}{{ value.flag_name }}`{{ ' (:code:`{}`)'.format(value.default_2) if value.default_2 | length > 0 else '' }}
+        {{ value.description }}
 {% endfor %}
