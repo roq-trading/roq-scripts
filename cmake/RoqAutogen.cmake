@@ -2,7 +2,7 @@ set(AUTOGEN_PY "${CMAKE_SOURCE_DIR}/scripts/autogen.py")
 
 function(roq_autodoc)
   set(options DUMMY_OPTION)
-  set(one_value OUTPUT NAMESPACE OUTPUT_TYPE FILE_TYPE SCHEMA_DIR)
+  set(one_value OUTPUT NAMESPACE OUTPUT_TYPE SCHEMA_DIR)
   set(multi_value SOURCES DEPENDS)
   cmake_parse_arguments(
     SELF
@@ -15,7 +15,7 @@ function(roq_autodoc)
   foreach(source ${SELF_SOURCES})
     get_filename_component(dir ${source} DIRECTORY)
     get_filename_component(name ${source} NAME_WE)
-    set(target "${CMAKE_CURRENT_BINARY_DIR}/${dir}/${name}.${SELF_FILE_TYPE}")
+    set(target "${CMAKE_CURRENT_BINARY_DIR}/${dir}/${name}.rstinc")
     if(DEFINED SELF_SCHEMA_DIR)
       set(real_source "${SELF_SCHEMA_DIR}/${source}")
     else()
@@ -27,7 +27,7 @@ function(roq_autodoc)
     endif(SELF_DEPENDS)
     add_custom_command(
       OUTPUT "${target}"
-      COMMAND ${Python3_EXECUTABLE} "${AUTOGEN_PY}" --namespace "${SELF_NAMESPACE}" --output-type "${SELF_OUTPUT_TYPE}" --file-type "${SELF_FILE_TYPE}" "${real_source}" > "${target}"
+      COMMAND ${Python3_EXECUTABLE} "${AUTOGEN_PY}" --namespace "${SELF_NAMESPACE}" --output-type "${SELF_OUTPUT_TYPE}" --file-type "rstinc" "${real_source}" > "${target}"
       WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/${dir}"
       VERBATIM
       DEPENDS "${depends}")
