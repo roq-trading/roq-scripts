@@ -185,6 +185,7 @@ echo -e "\033[1;34mInstall dependencies...\033[0m"
 echo -e "\033[1;34mInstall dependencies from $BUILD...\033[0m"
 
 "$CONDA_DIR/bin/mamba" install --name "$CONDA_ENV" --freeze-installed --yes --channel "https://roq-trading.com/conda/$BUILD" \
+  roq-autogen \
   roq-client \
   roq-codec \
   roq-flags \
