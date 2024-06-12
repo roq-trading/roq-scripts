@@ -10,6 +10,8 @@
 
 #include "roq/exceptions.hpp"
 
+#include "roq/utils/charconv.hpp"
+
 #include "roq/flags/validators.hpp"
 
 using namespace std::literals;
@@ -20,7 +22,7 @@ ABSL_FLAG(  //
 {%- if value.has_validator %}
     {{ value.validator }},
 {%- else %}
-{%- if value.type == 'std::vector<uint16_t>' %}
+{%- if value.type == 'std::vector<uint16_t>' or value.type == 'std::vector<double>' %}
     std::vector<std::string>,
 {%- else %}
 {%- if value.type == 'std::chrono::nanoseconds' %}
@@ -72,12 +74,13 @@ struct Helper final {
 {%- if value.type == 'std::chrono::nanoseconds' %}
   static {{ value.type }} const result{absl::ToChronoNanoseconds(absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }}))};
 {%- else %}
-{%- if value.type == 'std::vector<uint16_t>' %}
+{%- if value.type == 'std::vector<uint16_t>' or value.type == 'std::vector<double>' %}
   auto parse = []() {
     auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
     {{ value.type }} result;
+    using value_type = {{ value.type }}::value_type;
     for (auto& item : flag) {
-      auto value = core::from_chars<uint16_t>(item);
+      auto value = roq::utils::from_chars<value_type>(item);
       result.emplace_back(value);
     }
     return result;
