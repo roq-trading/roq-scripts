@@ -230,22 +230,13 @@ def main():
         description="Miniforge3 installer script",
     )
 
-    parser.add_argument("type", metavar="[debug|release]", type=str, nargs=1, help="type")
     parser.add_argument("channel", metavar="[unstable|stable]", type=str, nargs=1, help="channel")
+    parser.add_argument("type", metavar="[debug|release]", type=str, nargs=1, help="type")
 
     args = parser.parse_args()
 
-    if args.type is None or args.channel is None:
+    if args.channel is None or args.type is None:
         print_error("Expected two arguments.")
-        sys.exit(1)
-
-    typ = args.type[0]
-
-    if not typ in {
-        "debug",
-        "release",
-    }:
-        print_error("Expected first argument to be type. Use 'debug' or 'release'.")
         sys.exit(1)
 
     channel = args.channel[0]
@@ -255,6 +246,15 @@ def main():
         "stable",
     }:
         print_error("Expected second argument to be channel. Use 'unstable' or 'stable'.")
+        sys.exit(1)
+
+    typ = args.type[0]
+
+    if not typ in {
+        "debug",
+        "release",
+    }:
+        print_error("Expected first argument to be type. Use 'debug' or 'release'.")
         sys.exit(1)
 
     validate_env()
