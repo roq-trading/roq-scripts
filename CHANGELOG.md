@@ -4,6 +4,10 @@ All notable changes will be documented in this file.
 
 ## Head
 
+### Added
+
+* Python scripts
+
 ### Removed
 
 * Code auto-generation now moved to the roq-autogen project

@@ -1,1 +1,1 @@
-#include "{{ raw_namespace }}/{{ filename }}.hpp"
+#include "{{ namespaces | join('/') }}/{{ filename }}.hpp"

@@ -4,11 +4,20 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
     return std::begin(context);
   }
   auto format(
-      const {{ namespaces | join('::') }}::{{ name }}& value,
+{%- if variables | length == 0 %}
+      {{ namespaces | join('::') }}::{{ name }} const&,
+{%- else %}
+      {{ namespaces | join('::') }}::{{ name }} const& value,
+{%- endif %}
       format_context& context) const {
     using namespace std::literals;
     return fmt::format_to(
         context.out(),
+{%- if variables | length == 0 %}
+{%- raw %}
+        R"({{}})"sv);
+{%- endraw %}
+{%- else %}
 {%- raw %}
         R"({{)"
 {%- endraw %}
@@ -16,11 +25,11 @@ struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
         R"({{ variable.name }}={{ variable.format_string }}{{ ', ' if not loop.last }})"
 {%- endfor %}
 {%- raw %}
-        R"(}})"sv
+        R"(}})"sv,
 {%- endraw %}
 {%- for variable in variables %}
-        , {{ variable.format_value }}
+        {{ variable.format_value }}{{ ',' if not loop.last else ');' }}
 {%- endfor %}
-    );
+{%- endif %}
   }
 };

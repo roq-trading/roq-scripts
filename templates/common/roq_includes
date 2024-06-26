@@ -1,0 +1,3 @@
+{%- for item in roq_includes %}
+#include {{ item }}
+{%- endfor %}
