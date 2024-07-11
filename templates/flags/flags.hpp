@@ -2,15 +2,11 @@
 
 #pragma once
 
-#include <fmt/chrono.h>
-#include <fmt/format.h>
-#include <fmt/ranges.h>
+{% include 'fmt_includes' %}
 
-#include <chrono>
-#include <cstdint>
-#include <string>
-#include <string_view>
-#include <vector>
+
+{% include 'std_includes' %}
+
 
 {% include 'namespace_begin' %}
 

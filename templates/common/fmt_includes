@@ -1,4 +1,4 @@
-{%- if '<chrono>' in std_includes %}
-#include <fmt/chrono.h>
-{%- endif %}
-#include <fmt/format.h>
+{%- for item in fmt_includes %}
+#include {{ item }}
+{%- endfor %}
+#include <fmt/core.h>

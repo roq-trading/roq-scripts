@@ -6,7 +6,6 @@
 
 
 {% include 'fmt_includes' %}
-#include <fmt/ranges.h>
 
 
 {% include 'std_includes' %}
