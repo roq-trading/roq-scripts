@@ -10,7 +10,7 @@
 
 #include "roq/exceptions.hpp"
 
-#include "roq/utils/charconv.hpp"
+#include "roq/utils/charconv/from_chars.hpp"
 
 #include "roq/flags/validators.hpp"
 
@@ -80,7 +80,7 @@ struct Helper final {
     {{ value.type }} result;
     using value_type = {{ value.type }}::value_type;
     for (auto& item : flag) {
-      auto value = roq::utils::from_chars<value_type>(item);
+      auto value = roq::utils::charconv::from_chars<value_type>(item);
       result.emplace_back(value);
     }
     return result;
