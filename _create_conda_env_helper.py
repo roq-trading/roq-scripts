@@ -50,7 +50,7 @@ def get_conda_compiler():
     if sysname == "Linux":
         return f"gxx_linux-{pkg_ext}"
     if sysname == "Darwin":
-        return f"clang_osx-{pkg_ext}"
+        return f"clangxx_osx-{pkg_ext}"
     print_error("Unknown kernel.")
     sys.exit(1)
 
