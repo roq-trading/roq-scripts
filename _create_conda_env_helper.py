@@ -78,7 +78,7 @@ def read_meta(meta, output):
         requirements = doc["requirements"]
         x = set()
         for _, values in requirements.items():
-            x.update([helper(item) for item in values])
+            x.update([helper(item) for item in values if 'cross-python_' not in item])
         with open(output, "w", encoding="utf-8") as f:
             for line in sorted(x):
                 f.write(f"{line}\n")
