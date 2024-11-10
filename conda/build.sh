@@ -32,7 +32,7 @@ fi
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't use CPPFLAGS
 
 if [ ! -z ${ROQ_CMAKE_ARGS+x} ]; then
-  CMAKE_ARGS+=" $ROW_CMAKE_ARGS"
+  CMAKE_ARGS+=" $ROQ_CMAKE_ARGS"
 fi
 
 if [ ! -z ${PYTHON+x} ]; then
