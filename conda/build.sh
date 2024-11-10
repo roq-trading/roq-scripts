@@ -31,6 +31,10 @@ fi
 
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't use CPPFLAGS
 
+if [ ! -z ${PYTHON+x} ]; then
+  CMAKE_ARGS+=" -DPython_EXECUTABLE=$PYTHON"
+fi
+
 echo -e "\033[1;34m--- ENVIRONMENT ---\033[0m"
 
 env | sort
