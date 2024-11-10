@@ -31,6 +31,10 @@ fi
 
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't use CPPFLAGS
 
+if [ -f "build.cmake" ]; then
+  CMAKE_ARGS="-C build.cmake $CMAKE_ARGS"
+fi
+
 if [ ! -z ${PYTHON+x} ]; then
   CMAKE_ARGS+=" -DPython_EXECUTABLE=$PYTHON"
 fi
