@@ -22,11 +22,11 @@ CXXFLAGS=$(echo "$CXXFLAGS" | sed -e 's/-O[012]/-O3/g')
 LDFLAGS=$(echo "$LDFLAGS" | sed -e 's/-O[012]/-O3/g')
 
 if [[ $build_platform == *"linux"* ]]; then
-  CPPFLAGS="$CPPFLAGS -Wno-psabi -Wno-stringop-overflow"
+  CPPFLAGS+=" -Wno-psabi -Wno-stringop-overflow"
 fi
 
 if [[ $build_platform == *"osx"* ]]; then
-  CPPFLAGS="$CPPFLAGS -D_LIBCPP_DISABLE_AVAILABILITY"
+  CPPFLAGS+=" -D_LIBCPP_DISABLE_AVAILABILITY"
 fi
 
 CXXFLAGS+=" $CPPFLAGS"  # CMake doesn't use CPPFLAGS
