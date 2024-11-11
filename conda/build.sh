@@ -6,7 +6,7 @@ echo -e "\033[1;34m--- PREPARE ---\033[0m"
 
 case "$ARCH" in
   64)
-    CFLAGS=$(echo "$CFLAGS" | sed -e 's/-march=\[a-zA-Z0-9]*/-march=broadwell/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=broadwell/g')
+    CFLAGS=$(echo "$CFLAGS" | sed -e 's/-march=[a-zA-Z0-9]*/-march=broadwell/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=broadwell/g')
     CXXFLAGS=$(echo "$CXXFLAGS" | sed -e 's/-march=[a-zA-Z0-9]*/-march=broadwell/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=broadwell/g')
     ;;
   aarch64|arm64)
