@@ -6,8 +6,8 @@ echo -e "\033[1;34m--- PREPARE ---\033[0m"
 
 case "$ARCH" in
   64)
-    CFLAGS=$(echo "$CFLAGS" | sed -e 's/-march=\[a-zA-Z0-9]*/-march=skylake/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=skylake/g')
-    CXXFLAGS=$(echo "$CXXFLAGS" | sed -e 's/-march=[a-zA-Z0-9]*/-march=skylake/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=skylake/g')
+    CFLAGS=$(echo "$CFLAGS" | sed -e 's/-march=\[a-zA-Z0-9]*/-march=broadwell/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=broadwell/g')
+    CXXFLAGS=$(echo "$CXXFLAGS" | sed -e 's/-march=[a-zA-Z0-9]*/-march=broadwell/g' -e 's/-mtune=[a-zA-Z0-9]*/-mtune=broadwell/g')
     ;;
   aarch64|arm64)
     ;;
@@ -16,10 +16,10 @@ case "$ARCH" in
     ;;
 esac
 
-CFLAGS=$(echo "$CFLAGS" | sed -e 's/-O[0-9]/-O3/g')
-CPPFLAGS=$(echo "$CPPFLAGS" | sed -e 's/-O[0-9]/-O3/g')
-CXXFLAGS=$(echo "$CXXFLAGS" | sed -e 's/-O[0-9]/-O3/g')
-LDFLAGS=$(echo "$LDFLAGS" | sed -e 's/-O[0-9]/-O3/g')
+CFLAGS=$(echo "$CFLAGS" | sed -e 's/-O[012]/-O3/g')
+CPPFLAGS=$(echo "$CPPFLAGS" | sed -e 's/-O[012]/-O3/g')
+CXXFLAGS=$(echo "$CXXFLAGS" | sed -e 's/-O[012]/-O3/g')
+LDFLAGS=$(echo "$LDFLAGS" | sed -e 's/-O[012]/-O3/g')
 
 if [[ $build_platform == *"linux"* ]]; then
   CPPFLAGS="$CPPFLAGS -Wno-psabi -Wno-stringop-overflow"
