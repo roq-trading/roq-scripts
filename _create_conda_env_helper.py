@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 """                                                                                                                                                                
-Copyright (c) 2017-2024, Hans Erik Thrane                                                                                                                       
+Copyright (c) 2017-2025, Hans Erik Thrane                                                                                                                       
                                                                                                                                                                 
 Helper script to create requirements.txt
 """
