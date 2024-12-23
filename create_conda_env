@@ -245,7 +245,7 @@ def main():
         "unstable",
         "stable",
     }:
-        print_error("Expected second argument to be channel. Use 'unstable' or 'stable'.")
+        print_error("Expected first argument to be channel. Use 'unstable' or 'stable'.")
         sys.exit(1)
 
     typ = args.type[0]
@@ -254,7 +254,7 @@ def main():
         "debug",
         "release",
     }:
-        print_error("Expected first argument to be type. Use 'debug' or 'release'.")
+        print_error("Expected second argument to be type. Use 'debug' or 'release'.")
         sys.exit(1)
 
     validate_env()
