@@ -2,9 +2,9 @@
 
 #pragma once
 
-#include <magic_enum/magic_enum.hpp>
+#include <fmt/core.h>
 
-{% include 'fmt_includes' %}
+#include <magic_enum/magic_enum_format.hpp>
 
 {% include 'std_includes' %}
 
@@ -19,19 +19,3 @@ enum class {{ name }} : uint8_t {
 };
 
 {% include 'namespace_end' %}
-
-template <>
-struct fmt::formatter<{{ namespaces | join('::') }}::{{ name }}> {
-  constexpr auto parse(format_parse_context &context) {
-    return std::begin(context);
-  }
-  auto format(
-      {{ namespaces | join('::') }}::{{ name }} const& value,
-      format_context& context) const {
-    using namespace std::literals;
-    return fmt::format_to(
-        context.out(),
-        "{}"sv,
-        magic_enum::enum_name(value));
-  }
-};
