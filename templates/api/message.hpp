@@ -8,6 +8,9 @@
 {% include 'fmt_includes' %}
 
 
+#include <magic_enum/magic_enum_format.hpp>
+
+
 {% include 'std_includes' %}
 
 

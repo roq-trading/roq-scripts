@@ -6,6 +6,7 @@
 
 {% include 'std_includes' %}
 #include <cassert>
+#include <cstdint>
 
 {% include 'namespace_begin' %}
 
