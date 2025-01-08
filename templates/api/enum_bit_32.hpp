@@ -12,7 +12,7 @@
 
 //! {{ comment }}
 enum class {{ name }} : uint32_t {
-  UNDEFINED = 0x0,
+  UNDEFINED = 0,
 {%- for value in values %}
   {{ value.enum_value }} = {{ "{:#x}".format((1).__lshift__(value.position)) }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
 {%- endfor %}
