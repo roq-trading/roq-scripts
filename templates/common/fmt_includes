@@ -1,4 +1,4 @@
 {%- for item in fmt_includes %}
 #include {{ item }}
 {%- endfor %}
-#include <fmt/core.h>
+#include <fmt/format.h>
