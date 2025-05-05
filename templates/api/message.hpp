@@ -27,7 +27,7 @@ struct ROQ_PUBLIC {{ name }} final {
 };
 
 template <>
-inline constexpr std::string_view get_name<{{ name }}>() {
+constexpr std::string_view get_name<{{ name }}>() {
   using namespace std::literals;
   return "{{ filename }}"sv;
 }
