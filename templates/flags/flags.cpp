@@ -103,8 +103,9 @@ struct Helper final {
 {%- if value.is_pod_or_std %}
 {%- if value.is_required %}
   static const {{ value.type }} result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
-  if (result == {{ value.type }}{})
+  if (result == {{ value.type }}{}) {
     throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+  }
 {%- else %}
   static {{ value.type }} const result{absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }})};
 {%- endif %}
@@ -112,12 +113,14 @@ struct Helper final {
   auto helper = [](){
     auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
 {%- if value.is_required %}
-    if (std::empty(flag))
+    if (std::empty(flag)) {
       throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+    }
 {%- else %}
 {%- if not 'std::vector<' in value.type %}
-    if (flag.required() && std::empty(flag))
+    if (flag.required() && std::empty(flag)) {
       throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+    }
 {%- endif %}
 {%- endif %}
     return flag;
