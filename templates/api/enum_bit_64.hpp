@@ -11,7 +11,7 @@
 {% include 'namespace_begin' %}
 
 //! {{ comment }}
-enum class {{ name }} : uint64_t {
+enum class {{ name }} : uint64_t {  // NOLINT(performance-enum-size)
   UNDEFINED = 0,
 {%- for value in values %}
   {{ value.enum_value }} = {{ "{:#x}".format((1).__lshift__(value.position)) }},{{ '  //!< {}'.format(value.comment) if value.comment|length > 0 else '' }}
