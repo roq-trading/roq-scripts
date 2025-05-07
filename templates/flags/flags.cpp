@@ -91,8 +91,9 @@ struct Helper final {
 {%- if value.is_required %}
   auto helper = [](){
     auto flag = absl::GetFlag(FLAGS_{{ prefix }}{{ value.flag_name }});
-    if (std::empty(flag))
+    if (std::empty(flag)) {
       throw roq::RuntimeError{"--{{ prefix }}{{ value.flag_name }} is required"sv};
+    }
     return flag;
   };
   static {{ value.type }} const result{helper()};
