@@ -15,7 +15,7 @@
 #include "roq/flags/validators.hpp"
 
 using namespace std::literals;
-using namespace std::chrono_literals;  // NOLINT
+using namespace std::chrono_literals;
 
 {% for value in values %}
 ABSL_FLAG(  //
