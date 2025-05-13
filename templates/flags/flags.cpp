@@ -35,15 +35,15 @@ ABSL_FLAG(  //
     {{ prefix }}{{ value.flag_name }},
 {%- if value.type == 'std::chrono::nanoseconds' %}
 {%- if value.default_raw[-3:-1] == 'ns' %}
-   absl::Nanoseconds({{ value.default_raw[1:-3] }}),
+   absl::Nanoseconds({{ value.default_raw[1:-3] }}),  // NOLINT(readability-magic-numbers)
 {%- else %}
 {%- if value.default_raw[-3:-1] == 'ms' %}
-   absl::Milliseconds({{ value.default_raw[1:-3] }}),
+   absl::Milliseconds({{ value.default_raw[1:-3] }}),  // NOLINT(readability-magic-numbers)
 {%- else %}
 {%- if value.default_raw[-2] == 's' %}
    absl::Seconds({{ value.default_raw[1:-2] }}),
 {%- else %}
-    {{ value.default_raw }},  // XXX maybe extend template to more duration types?
+    {{ value.default_raw }},  // NOLINT(readability-magic-numbers)
 {%- endif %}
 {%- endif %}
 {%- endif %}
@@ -51,7 +51,7 @@ ABSL_FLAG(  //
 {%- if value.is_string or value.is_enum %}
     { {{ value.default_raw }} },
 {%- else %}
-    {{ value.default_raw }},
+    {{ value.default_raw }},  // NOLINT(readability-magic-numbers)
 {%- endif %}
 {%- endif %}
     "{{ value.description }}"s);
