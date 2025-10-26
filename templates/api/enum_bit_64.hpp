@@ -2,8 +2,6 @@
 
 #pragma once
 
-#include "roq/compat/fmt.hpp"
-
 {% include 'fmt_includes' %}
 
 {% include 'std_includes' %}
