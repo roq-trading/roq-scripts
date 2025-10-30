@@ -39,6 +39,11 @@ if [ ! -z ${PYTHON+x} ]; then
   CMAKE_ARGS+=" -DPython_EXECUTABLE=$PYTHON"
 fi
 
+# see: https://github.com/conda-forge/protozfits-feedstock/pull/54
+if [[ $CONDA_BUILD_CROSS_COMPILATION -eq 1 ]]; then
+  CMAKE_ARGS+=" -Dprotobuf_generate_PROTOC_EXE=$BUILD_PREFIX/bin/protoc"
+fi
+
 echo -e "\033[1;34m--- ENVIRONMENT ---\033[0m"
 
 env | sort
