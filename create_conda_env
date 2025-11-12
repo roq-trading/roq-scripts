@@ -42,7 +42,8 @@ def validate_env():
     Validate the user's existing environment
     """
     # conda already activated?
-    if "CONDA_PREFIX" in os.environ:
+    conda_prefix = os.environ.get("CONDA_PREFIX")
+    if conda_prefix is not None and len(conda_prefix) > 0:
         print_error("Please deactivate your conda environment before using this script. Use 'conda deactivate'.")
         sys.exit(1)
     # have seen issues when anaconda was installed
