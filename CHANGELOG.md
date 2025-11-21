@@ -4,6 +4,8 @@ All notable changes will be documented in this file.
 
 ## Head
 
+## 1.1.0 &ndash; 2025-11-22
+
 ### Fixed
 
 * The `create_conda_dev` script didn't work after use of `conda deactivate`
