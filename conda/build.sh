@@ -70,6 +70,6 @@ cmake --build build-cmake \
 
 echo -e "\033[1;34m--- INSTALL ---\033[0m"
 
-cmake --install .
+cmake --install build-cmake
 
 echo -e "\033[1;34m--- DONE ---\033[0m"
