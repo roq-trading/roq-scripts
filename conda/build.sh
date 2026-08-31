@@ -54,11 +54,12 @@ cmake ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_PREFIX=$PREFIX \
   -DBUILD_TESTING=ON \
   -DBUILD_DOCS=OFF \
-  .
+  -S . \
+  -B build-cmake
 
 echo -e "\033[1;34m--- BUILD ---\033[0m"
 
-cmake --build . \
+cmake --build build-cmake \
   --clean-first \
   --parallel=${CPU_COUNT:-2} \
   -- VERBOSE=1
