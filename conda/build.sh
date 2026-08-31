@@ -48,13 +48,17 @@ echo -e "\033[1;34m--- ENVIRONMENT ---\033[0m"
 
 env | sort
 
+echo "SRC_DIR=$SRC_DIR"
+
+ls -1 $SRC_DIR
+
 echo -e "\033[1;34m--- CONFIGURE ---\033[0m"
 
 cmake ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_PREFIX=$PREFIX \
   -DBUILD_TESTING=ON \
   -DBUILD_DOCS=OFF \
-  -S . \
+  -S $SRC_DIR \
   -B build-cmake
 
 echo -e "\033[1;34m--- BUILD ---\033[0m"
