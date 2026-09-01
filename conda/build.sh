@@ -48,9 +48,13 @@ echo -e "\033[1;34m--- ENVIRONMENT ---\033[0m"
 
 env | sort
 
-echo "SRC_DIR=$SRC_DIR"
+# workaround for libexpat
+SOURCE_DIR=$SRC_DIR
+if [ -d $SRC_DIR/expat ]; then
+SOURCE_DIR=$SRC_DIR/expat
+fi
 
-ls -1 $SRC_DIR
+ls -l $SRC_DIR
 
 echo -e "\033[1;34m--- CONFIGURE ---\033[0m"
 
@@ -58,7 +62,7 @@ cmake ${CMAKE_ARGS} \
   -DCMAKE_INSTALL_PREFIX=$PREFIX \
   -DBUILD_TESTING=ON \
   -DBUILD_DOCS=OFF \
-  -S $SRC_DIR \
+  -S $SOURCE_DIR \
   -B build-cmake
 
 echo -e "\033[1;34m--- BUILD ---\033[0m"
